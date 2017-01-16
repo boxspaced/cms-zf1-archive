@@ -1,0 +1,25 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-right.css', 'screen');
+$this->headLink()->appendStylesheet('/css/light-blue-colour-scheme.css', 'screen');
+$this->layout()->title = 'Your search results';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Course Search</h1>
+                <!--<p>Query used: <?php echo $this->escape($this->searchQuery) ?></p>-->
+            </section>
+            <section class="col last-col">
+                <h2>Your search results:</h2>
+                <?php if (count($this->paginator)) : ?>
+                <ol class="search-results">
+                    <?php echo $this->partialLoop('course/_result-item.phtml', $this->paginator) ?>
+                </ol>
+                <?php else : ?>
+                <p>No results found</p>
+                <?php endif; ?>
+                <?php echo $this->paginationControl($this->paginator, 'Sliding', 'shared/_frontend-pagination.phtml', array(
+                    'query' => $this->query
+                )); ?>
+            </section>

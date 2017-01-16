@@ -1,0 +1,37 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+
+    <td width="100%">
+        <div class="item-icon">
+            <img src="<?php echo $this->escape($this->typeIcon) ?>" alt="" title="<?php echo $this->escape($this->typeName) ?> block" />
+        </div>
+        <div class="item-title">
+            <em><?php echo $this->escape($this->name) ?></em>
+        </div>
+        <div class="item-detail">
+            Type: <em><?php echo $this->escape($this->typeName) ?> block</em>
+        </div>
+    </td>
+
+    <td>
+    <span class="sprite-icon sprite-lightbulb-<?php echo $this->escape($this->lifespanState) ?>" title="<?php echo $this->escape($this->lifespanTitle) ?>">Bulb <?php echo $this->escape($this->lifespanState) ?> icon</span>
+    </td>
+
+    <?php if ($this->allowEdit) : ?>
+    <td><a href="/block/edit/id/<?php echo $this->escape($this->id) ?>" title="Edit"><span class="sprite-icon sprite-edit-on">Edit icon</span></a></td>
+    <?php else : ?>
+    <td><span class="sprite-icon sprite-edit-off">Edit icon disabled</span></td>
+    <?php endif; ?>
+
+    <?php if ($this->allowPublish) : ?>
+    <td><a href="/block/publish/id/<?php echo $this->escape($this->id) ?>" title="Edit publishing"><span class="sprite-icon sprite-globe-on">Globe icon</span></a></td>
+    <?php else : ?>
+    <td><span class="sprite-icon sprite-globe-off">Globe icon disabled</span></td>
+    <?php endif; ?>
+
+    <?php if ($this->allowDelete) : ?>
+    <td><a href="/block/delete/id/<?php echo $this->escape($this->id) ?>" title="Delete"><span class="sprite-icon sprite-dustbin-on">Dustbin icon</span></a></td>
+    <?php else : ?>
+    <td><span class="sprite-icon sprite-dustbin-off">Dustbin disabled icon</span></td>
+    <?php endif; ?>
+
+</tr>

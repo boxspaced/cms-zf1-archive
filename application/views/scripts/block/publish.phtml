@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/container/assets/skins/sam/container.css" />
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+
+        <script type="text/javascript" src="/js/buttons.js"></script>
+        <script type="text/javascript" src="/js/general.js"></script>
+        <script type="text/javascript" src="/js/dynamic_tables.js"></script>
+        <script type="text/javascript" src="/js/calendar.js"></script>
+        <script type="text/javascript" src="/js/help.js"></script>
+
+    </head>
+
+    <body class="yui-skin-sam">
+
+        <div id="top"><!-- Start top area -->
+
+            <div class="title">Publish:
+                <?php echo $this->escape($this->typeName) ?> - <i><?php echo $this->escape($this->blockName) ?></i></div>
+            <?php echo $this->flashMessages() ?>
+            <div class="info"><img src="/images/required_star.png" alt="Required"> indicates required field</div>
+
+        </div><!-- End top area -->
+
+        <?php
+        $form = $this->form;
+        $form->render();
+        ?>
+
+        <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+
+            <?php echo $this->decorateFormElement($form->from) ?>
+            <?php echo $this->decorateFormElement($form->id) ?>
+            <?php echo $this->decorateFormElement($form->partial) ?>
+            <?php echo $this->decorateFormElement($form->token) ?>
+
+            <div id="stage"><!-- Start stage area -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Notes</div>
+                        <p>
+                            <?php if (empty($this->blockNotes)) : ?>
+                                No notes found
+                            <?php else : ?>
+                                <?php foreach ($this->blockNotes as $note) : ?>
+                                    <?php
+                                    echo $this->date($note->time, 'F j Y H:i') . ' - ' .
+                                    $this->escape($note->username) . ' - ' .
+                                    $this->escape($note->text)
+                                    ?><br />
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </div><!-- End fieldset -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Lifespan</div>
+
+                        <?php echo $this->decorateFormElement($form->liveFrom) ?>
+                        <div style="position: relative; top: -38px; left: 315px;">
+                            <a href="javascript:cal1.popup();"><img src="/images/icons/calendar.png" width="16" height="16" border="0"
+                                 title="Pick date/time" alt="Pick date/time"></a> or <a href="javascript:set_field_value('main', 'liveFrom',
+                              '<?php echo date('Y-m-d') ?> 00:00:00');">Immediately</a></div>
+
+                        <?php echo $this->decorateFormElement($form->expiresEnd) ?>
+                        <div style="position: relative; top: -38px; left: 315px;">
+                        <a href="javascript:cal2.popup();"><img src="/images/icons/calendar.png" width="16" height="16" border="0"
+                             title="Pick date/time" alt="Pick date/time"></a> or <a href="javascript:set_field_value('main', 'expiresEnd',
+                           '2038-01-19 00:00:00');">Never</a></div>
+
+                    </div>
+                </div><!-- End fieldset -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Settings</div>
+
+                            <?php echo $this->decorateFormElement($form->name) ?>
+
+                            <?php
+                            $onChange = 'submit_partial(this.form)';
+                            $form->templateId->setAttrib('onChange', $onChange);
+                            if ($this->templateDescription) :
+                                $currentDesc = $form->templateId->getDescription();
+                                $form->templateId->setDescription($currentDesc . $this->templateDescription);
+                            endif;
+                            echo $this->decorateFormElement($form->templateId) ?>
+                    </div>
+                </div><!-- End fieldset -->
+
+            </div><!-- End stage area -->
+
+            <div class="submit-area">
+
+                <div class="form-element">
+                    <div class="form-inputs line-up">
+                        <?php
+                        $form->publish->setAttrib('class', 'button');
+                        echo $this->decorateFormElement($form->publish, true) ?>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+        <script language="JavaScript">
+            <!--
+            var input1 = document.getElementById('live-from');
+            var cal1 = new calendar(input1);
+            cal1.year_scroll = true;
+            cal1.time_comp = true;
+
+            var input2 = document.getElementById('expires-end');
+            var cal2 = new calendar(input2);
+            cal2.year_scroll = true;
+            cal2.time_comp = true;
+            -->
+        </script>
+    </body>
+</html>

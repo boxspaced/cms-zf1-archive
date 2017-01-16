@@ -1,0 +1,284 @@
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.required-star {
+    position: relative;
+    top: -4px;
+    left: 3px;
+}
+
+.filter {
+    border: 1px solid #ccc;
+    height: 130px;
+    overflow: scroll;
+    padding: .7em;
+}
+
+#admin-menu-control {
+    margin-top: .5em;
+}
+#admin-control {
+    margin-top: .5em;
+}
+#admin-control .message {
+    margin-bottom: 1em;
+}
+
+#header {
+    border-bottom: #160C42 solid 6px;
+}
+
+#search {
+    float: right;
+    padding-top: 1em;
+}
+
+#top-nav {
+    background-color: #160C42;
+}
+
+#top-nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+#top-nav li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+#top-nav li a {
+    display: block;
+    float: right;
+    text-align: center;
+    padding: .4em 1.5em;
+    font-weight: bold;
+}
+
+#main-nav {
+    margin: 15px 0 .5em 20px;
+}
+
+#main-nav li {
+    margin-right: 3em;
+}
+
+#main-nav li a {
+    color: #333;
+}
+#main-nav li.active a {
+    background-color: #eee;
+}
+
+#main-nav .hidden-menu-item,
+#sub-nav .hidden-menu-item {
+    display:none;
+}
+
+#sub-nav {
+    background-color: #160C42;
+    list-style-type: none;
+    margin: 0 0 1em 0;
+    padding: .8em 0 0 0;
+}
+#sub-nav li {
+    margin: 0;
+    padding: 0 .8em .8em .8em;
+}
+#sub-nav li a {
+    color: white;
+    font-weight: bold;
+    display: block;
+}
+
+#content {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+#breadcrumbs {
+    height: 40px;
+    padding: 8px 30px;
+}
+
+#footer {
+    margin-top: 20px;
+    border-top: #160C42 solid 10px;
+}
+#footer p {
+    margin: 12px 0 0 30px;
+    float: left;
+}
+#footer-menu {
+    margin: 12px 30px 0 0;
+    float: right;
+}
+#footer-menu a {
+    color: #333;
+}
+
+.block {
+    margin-bottom: 1em;
+}
+
+h1 {
+    font-size: 24px;
+    line-height: normal;
+    margin: 0 0 .6em 0;
+}
+h2 {
+    font-size: 18px;
+    line-height: normal;
+    margin: 0 0 .6em 0;
+}
+h3 {
+    font-size: 14px;
+    line-height: normal;
+    margin: 0 0 .6em 0;
+}
+h4 {
+    font-size: 12px;
+    line-height: normal;
+    margin: 0 0 .6em 0;
+}
+
+hr {
+    background-color: #C4DC0A;
+    border-color: #C4DC0A;
+}
+
+table {
+    margin-bottom: 1em;
+}
+
+th, td {
+    padding: .3em;
+}
+
+table.course th,
+table.course td {
+    text-align: center;
+}
+
+ol.form,
+ol.form li {
+    padding: 0;
+    margin: 0 0 1em 0;
+    list-style: none;
+}
+ol.form ul.errors {
+    margin: 0;
+    padding: 0;
+}
+ol.form ul.errors li {
+    margin: 0;
+    color: #cc0000;
+}
+ol.form input.checkbox,
+ol.form input.radio {
+    margin-right: .5em;
+}
+
+div.message {
+    margin-left: 30px;
+    margin-bottom: 1em;
+}
+
+em#boxspaced-label {
+    text-indent: -6em;
+    display: block;
+    background: url(/images/logos/boxspaced_logo.png) center center no-repeat;
+    width: 1.5em;
+    overflow: hidden;
+}
+
+ol.search-results,
+ol.search-results li {
+    padding: 0;
+    margin: 0 0 .8em 0;
+    list-style: none;
+}
+ol.search-results li.digital-gallery-result {
+    float: left;
+    margin: 20px 20px 0 0;
+    width: 205px;
+}
+
+td img {
+    max-width: none;
+}
+
+.accessibility {
+    display: none;
+}
+
+table.course {
+    border-bottom: 2px solid #00A5D9;
+}
+table.course th {
+    background-color: #00A5D9;
+    color: white;
+}
+
+ul.cloud a.tag1 {
+    font-size: 0.7em;
+    font-weight: 100;
+}
+ul.cloud a.tag2 {
+    font-size: 0.8em;
+    font-weight: 200;
+}
+ul.cloud a.tag3 {
+    font-size: 0.9em;
+    font-weight: 300;
+}
+ul.cloud a.tag4 {
+    font-size: 1.0em;
+    font-weight: 400;
+}
+ul.cloud a.tag5 {
+    font-size: 1.2em;
+    font-weight: 500;
+}
+ul.cloud a.tag6 {
+    font-size: 1.4em;
+    font-weight: 600;
+}
+ul.cloud a.tag7 {
+    font-size: 1.6em;
+    font-weight: 700;
+}
+ul.cloud a.tag8 {
+    font-size: 1.8em;
+    font-weight: 800;
+}
+ul.cloud a.tag9 {
+    font-size: 2.2em;
+    font-weight: 900;
+}
+ul.cloud a.tag10 {
+    font-size: 2.5em;
+    font-weight: 900;
+}
+
+ul.cloud {
+    padding: 2px;
+    line-height: 3em;
+}
+ul.cloud a {
+    padding: 0px;
+}
+
+ul.cloud {
+    margin: 0;
+}
+ul.cloud li {
+    display: inline;
+}

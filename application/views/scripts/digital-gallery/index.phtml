@@ -1,0 +1,50 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-large-middle.css', 'screen');
+$this->headLink()->appendStylesheet('/css/red-colour-scheme.css', 'screen');
+$this->inlineScript()->appendFile('/js/digital-gallery.js');
+$this->layout()->title = $this->title;
+$this->layout()->metaKeywords = $this->keywords;
+$this->layout()->metaDescription = $this->description;
+
+$keywords = array();
+$keywordsExploded = explode(',', $this->keywords);
+foreach ($keywordsExploded as $keyword) {
+    $qs = '';
+    $kw = trim($keyword);
+    if (preg_match('/\d\d\d\ds/i', $kw)) {
+        $qs = 'q=&categories[]=' . $this->escape($kw);
+    } else {
+        $qs = 'q=' . $this->escape($kw);
+    }
+    $keywords[] = '<a href="/digital-gallery/results?' . $qs . '">' . $this->escape($kw) . '</a>';
+}
+?>
+
+            <section class="col first-col">
+                <h1>Digital Gallery Images</h1>
+            </section>
+            <section class="col">
+                <img src="/digital_gallery/<?php echo $this->escape($this->imageName) ?>" />
+            </section>
+            <section class="col last-col">
+                <h3>Title:</h3>
+                <p><?php echo $this->escape($this->title) ?></p>
+                <h3>Image Number:</h3>
+                <p>#<?php echo $this->escape($this->imageNo) ?></p>
+                <!--<h3>Price:</h3>
+                <p>&pound;<?php echo number_format($this->price, 2) ?></p>-->
+                <h3>Copyright:</h3>
+                <p>&copy; <?php echo $this->escape($this->copyright) ?></p>
+                <h3>Keywords:</h3>
+                <p><?php echo implode(', ', $keywords) ?></p>
+                <h3>Description:</h3>
+                <p><?php echo $this->escape($this->description) ?></p>
+                <!--<hr>
+                <?php if ($this->inBasket) : ?>
+                <span class="in-basket"><img src="/images/icons/add.png" /> In basket</span>
+                <?php else : ?>
+                <a class="add-to-basket" href="/digital-gallery/add-to-basket/id/<?php echo $this->escape($this->id); ?>">Add to basket</a>
+                <span class="in-basket" style="display: none"><img src="/images/icons/add.png" /> In basket</span>
+                <?php endif; ?>
+                <hr>-->
+            </section>

@@ -1,0 +1,115 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-equal.css', 'screen');
+$this->headLink()->appendStylesheet('/css/lime-green-colour-scheme.css', 'screen');
+$this->headLink()->appendStylesheet('/bootstrap-datepicker/css/datepicker.css', 'screen');
+$this->inlineScript()->appendFile('/bootstrap-datepicker/js/bootstrap-datepicker.js');
+$calendarScript = <<<SCRIPT
+$(function(){
+    $('#calendar').datepicker().on('changeDate', function(e) {
+        var date = new Date(e.date.valueOf());
+        var month = (date.getMonth()+1).toString();
+        if (month.length == 1) {
+            month = '0' + month;
+        }
+        var day = date.getDate().toString();
+        if (day.length == 1) {
+            day = '0' + day;
+        }
+        $('#calendar-date').val(date.getFullYear() + '-' + month + '-' + day);
+    });
+});
+SCRIPT;
+$this->inlineScript()->appendScript($calendarScript);
+$this->layout()->title = 'What\'s on';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+$calendarStartVenue = $this->query['venues'][0] ?: '';
+$calendarStartDate = $this->query['specificDates'][0] ?: date('Y-m-d');
+?>
+
+            <section class="col first-col">
+                <h1>What's On</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+                <h2>Calendar</h2>
+                <hr>
+                <form action="/whats-on/results" method="get" accept-charset="UTF-8">
+                    <select name="venues[]">
+                        <option value=""<?php if ($calendarStartVenue == '') : ?> selected="selected"<?php endif; ?>>Any Venue</option>
+                        <?php foreach ($this->filterVenues as $venue) : ?>
+                        <option value="<?php echo $this->escape($venue->value) ?>"<?php if ($venue->value == $calendarStartVenue) : ?> selected="selected"<?php endif; ?>>
+                            <?php echo ($venue->label == 'All') ? 'All Venues' : $this->escape($venue->label) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="hidden" name="specificDates[]" id="calendar-date" value="<?php echo $this->escape($calendarStartDate) ?>" />
+                    <div id="calendar" data-date="<?php echo $this->escape($calendarStartDate) ?>" data-date-format="yyyy-mm-dd"></div>
+                    <button type="submit" id="whats-on-date-search-btn" class="btn btn-success">Search</button>
+                </form>
+            </section>
+            <section class="col">
+                <form action="/whats-on/results" method="get" accept-charset="UTF-8">
+                    <div class="input-append">
+                        <input type="text" id="whats-on-search-q" name="q" placeholder="Search whats on...">
+                        <button type="submit" id="whats-on-search-btn" class="btn btn-success">Search</button>
+                    </div>
+                    <br><br>
+                    <h2>Search Filters</h2>
+                    <hr>
+                    <h3>Browse by Day / Time</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterDayTimes as $dayTime) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="dayTimes[]" value="<?php echo $this->escape($dayTime->value) ?>">
+                        <?php echo $this->escape($dayTime->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Venue</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterVenues as $venue) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="venues[]" value="<?php echo $this->escape($venue->value) ?>">
+                        <?php echo $this->escape($venue->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Activities</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterCategories as $category) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="categories[]" value="<?php echo $this->escape($category->value) ?>">
+                        <?php echo $this->escape($category->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Ages</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterAges as $age) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="ages[]" value="<?php echo $this->escape($age->value) ?>">
+                        <?php echo $this->escape($age->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-success pull-right">Search</button>
+                </form>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

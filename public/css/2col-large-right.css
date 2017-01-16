@@ -1,0 +1,13 @@
+.col {
+    float: left;
+}
+
+.first-col {
+    width: 205px;
+    margin: 0 20px 0 30px;
+}
+
+.last-col {
+    width: 695px;
+    margin: 0 30px 0 20px;
+}

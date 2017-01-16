@@ -1,0 +1,181 @@
+#!/usr/bin/env php
+<?php
+define('PREVENT_BOOTSTRAPPING', true);
+require_once realpath(dirname(__FILE__)) . '/../../public/index.php';
+
+$application->bootstrap();
+$bootstrap = $application->getBootstrap();
+
+$config = $bootstrap->getResource('config');
+$db = $bootstrap->getPluginResource('db')->getDbAdapter();
+$log = $bootstrap->getResource('log');
+$container = $bootstrap->getContainer();
+$service = $container['DigitalGalleryService'];
+
+try {
+
+    $options = new Zend_Console_Getopt(
+        [
+            'export|e' => 'Export the digital gallery',
+            'process-image|p=s' => 'Process an image',
+            'index|i' => '(Re)index the gallery',
+        ]
+    );
+    $options->parse();
+
+    switch (true) {
+
+        case $options->getOption('export'):
+
+            $file = fopen('php://temp', 'w+');
+            $dir = new DirectoryIterator($config->settings->digitalGalleryPrivateDirectory);
+
+            fputcsv($file, [
+                'title',
+                'keywords',
+                'description',
+                'imageNo',
+                'copyright',
+                'price',
+                'decades',
+                'locations',
+                'subjects',
+                'image',
+                'watermark',
+            ]);
+
+            foreach ($dir as $fileInfo) {
+
+                if ($fileInfo->isDot()) {
+                    continue;
+                }
+
+                $stmt = $db->query(
+                    "
+                        SELECT *
+                        FROM digital_gallery_image
+                        WHERE
+                            image_name = ?
+                    ",
+                    [
+                        $fileInfo->getFilename()
+                    ]
+                );
+
+                $image = $stmt->fetch();
+
+                if (false === $image) {
+
+                    $log->warn(sprintf('Skipping image because not found in database: %s', $fileInfo->getFilename()));
+                    continue;
+                }
+
+                $stmt = $db->query(
+                    "
+                        SELECT
+                            c.id,
+                            c.type
+                        FROM digital_gallery_image_category AS ic
+                        JOIN digital_gallery_category AS c ON
+                            c.id = ic.category_id
+                        WHERE
+                            ic.image_id = ?
+                    ",
+                    [
+                        $image['id']
+                    ]
+                );
+
+                $categories = $stmt->fetchAll();
+
+                $decades = [];
+                $locations = [];
+                $subjects = [];
+
+                foreach ($categories as $category) {
+
+                    switch ($category['type']) {
+
+                        case 'subject':
+                            $subjects[] = $category['id'];
+                            break;
+
+                        case 'category':
+                            $decades[] = $category['id'];
+                            break;
+
+                        case 'theme':
+                            $locations[] = $category['id'];
+                            break;
+
+                        default:
+                            // No default
+                    }
+                }
+
+                fputcsv($file, [
+                    $image['title'],
+                    $image['keywords'],
+                    $image['description'],
+                    $image['image_no'],
+                    $image['copyright'],
+                    $image['price'],
+                    implode(',', $decades),
+                    implode(',', $locations),
+                    implode(',', $subjects),
+                    $image['image_name'],
+                    0
+                ]);
+            }
+
+            rewind($file);
+
+            $csv = stream_get_contents($file);
+
+            fclose($file);
+
+            echo $csv;
+
+            break;
+
+        case $options->getOption('process-image'):
+
+            ini_set('memory_limit', '256M');
+
+            $log->info(sprintf(
+                'Processing image: %s',
+                $options->getOption('process-image')
+            ));
+
+            $service->processImage($options->getOption('process-image'));
+
+            $log->info(sprintf(
+                'Image processed, memory usage: %dMB',
+                ((memory_get_peak_usage(true) / 1024) / 1024)
+            ));
+
+            break;
+
+        case $options->getOption('index'):
+
+            $service->reindex();
+            break;
+
+        default:
+
+            echo $options->getUsageMessage();
+            exit(1);
+
+    }
+
+} catch (Zend_Console_Getopt_Exception $e) {
+
+    echo $e->getUsageMessage();
+    exit(1);
+
+} catch (Exception $e) {
+
+    $log->err($e);
+    echo 'An error occured, please see logs';
+    exit(1);
+}

@@ -1,0 +1,9 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+    <td><?php echo $this->escape($this->category) ?></td>
+    <td><?php echo $this->escape($this->activity) ?></td>
+    <td><?php echo $this->escape($this->dayTime) ?></td>
+    <td><?php echo $this->escape($this->venue) ?></td>
+    <td><?php echo $this->escape($this->age) ?></td>
+    <td><?php echo $this->escape($this->description) ?></td>
+    <td><?php echo $this->escape($this->date($this->specificDate, 'Y-m-d')) ?></td>
+</tr>

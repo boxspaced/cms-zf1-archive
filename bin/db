@@ -1,0 +1,71 @@
+#!/usr/bin/env php
+<?php
+define('PREVENT_BOOTSTRAPPING', true);
+require_once realpath(dirname(__FILE__)) . '/../public/index.php';
+
+$application->bootstrap();
+$bootstrap = $application->getBootstrap();
+$log = $bootstrap->getResource('log');
+
+try {
+
+    $options = new Zend_Console_Getopt(array(
+        'drop|d' => 'Drop the database',
+        'create|c' => 'Create the database',
+    ));
+    $options->parse();
+
+    $dsn = 'mysql:host=' . DB_HOST . ';charset=UTF8';
+
+    $db = new PDO($dsn, DB_USERNAME, DB_PASSWORD, array(
+        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
+    ));
+
+    switch (true) {
+
+        case $options->getOption('drop'):
+
+            $db->exec(
+                '
+                    DROP DATABASE IF EXISTS `' . DB_NAME . '`
+                '
+            );
+            break;
+
+        case $options->getOption('create'):
+
+            $db->exec(
+                '
+                    CREATE DATABASE IF NOT EXISTS `' . DB_NAME . '`
+                    CHARACTER SET utf8
+                    COLLATE utf8_general_ci
+                '
+            );
+
+            $db->exec('USE `' . DB_NAME . '`');
+
+            $schema = file_get_contents(APPLICATION_PATH . '/../migrations/base-schema.sql');
+            $db->exec($schema);
+
+            $fixtures = file_get_contents(APPLICATION_PATH . '/../migrations/base-fixtures.sql');
+            $db->exec($fixtures);
+
+            break;
+
+        default:
+            echo $options->getUsageMessage();
+            exit(1);
+
+    }
+
+} catch (Zend_Console_Getopt_Exception $e) {
+
+    echo $e->getUsageMessage();
+    exit(1);
+
+} catch (Exception $e) {
+
+    $log->err($e);
+    echo 'An error occured, please see logs';
+    exit(1);
+}

@@ -1,0 +1,5 @@
+<li><strong><?php echo $this->escape($this->activity) ?></strong><br>
+    <?php echo $this->escape($this->description) ?><br>
+    Day/time: <?php echo $this->escape($this->dayTime) ?><?php if ($this->specificDate) : ?> - <?php echo $this->date($this->specificDate, 'jS F Y') ?><?php endif; ?><br>
+    Venue: <?php echo $this->escape($this->venue) ?><br>
+    Age: <?php echo $this->escape($this->age) ?></li>

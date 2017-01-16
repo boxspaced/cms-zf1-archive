@@ -1,0 +1,34 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-equal.css', 'screen');
+if ($this->colourScheme) {
+    $this->headLink()->appendStylesheet('/css/' . $this->colourScheme . '-colour-scheme.css', 'screen');
+}
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = $this->title;
+$this->layout()->metaKeywords = $this->metaKeywords;
+$this->layout()->metaDescription = $this->metaDescription;
+$this->layout()->template = $this->templateName;
+?>
+
+            <section class="col first-col">
+                <?php foreach ((array) $this->leftColumn as $block) : echo $block; endforeach; ?>
+            </section>
+            <section class="col">
+                <!--<nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>-->
+                <?php foreach ((array) $this->beneathNavigation as $block) : echo $block; endforeach; ?>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

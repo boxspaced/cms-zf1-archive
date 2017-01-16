@@ -1,0 +1,25 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-right.css', 'screen');
+$this->headLink()->appendStylesheet('/css/red-colour-scheme.css', 'screen');
+$this->inlineScript()->appendFile('/js/digital-gallery.js');
+$this->layout()->title = 'Your search results';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Digital Gallery Images</h1>
+            </section>
+            <section class="col last-col">
+                <?php if (count($this->paginator)) : ?>
+                <ol class="search-results">
+                    <?php echo $this->partialLoop('digital-gallery/_result-item.phtml', $this->paginator) ?>
+                </ol>
+                <?php else : ?>
+                <p>No results found</p>
+                <?php endif; ?>
+                <div class="clearfix"></div>
+                <?php echo $this->paginationControl($this->paginator, 'Sliding', 'shared/_frontend-pagination.phtml', array(
+                    'query' => $this->query
+                )); ?>
+            </section>

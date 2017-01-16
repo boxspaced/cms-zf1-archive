@@ -1,0 +1,80 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-equal.css', 'screen');
+$this->headLink()->appendStylesheet('/css/light-blue-colour-scheme.css', 'screen');
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = 'Course Search';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Course Search</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+            </section>
+            <section class="col">
+                <form action="/course/results" method="get" accept-charset="UTF-8">
+                    <div class="input-append">
+                        <input type="text" id="course-search-q" name="q" placeholder="Search courses...">
+                        <button type="submit" id="course-search-btn" class="btn btn-success">Search</button>
+                    </div>
+                    <br><br>
+                    <h2>Search Filters</h2>
+                    <hr>
+                    <h3>Browse by Category</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterCategories as $category) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="categories[]" value="<?php echo $this->escape($category->value) ?>">
+                        <?php echo $this->escape($category->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Day</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterDays as $day) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="days[]" value="<?php echo $this->escape($day->value) ?>">
+                        <?php echo $this->escape($day->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Time</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterTimes as $time) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="times[]" value="<?php echo $this->escape($time->value) ?>">
+                        <?php echo $this->escape($time->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Venue</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterVenues as $venue) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="venues[]" value="<?php echo $this->escape($venue->value) ?>">
+                        <?php echo $this->escape($venue->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-success pull-right">Search</button>
+                </form>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

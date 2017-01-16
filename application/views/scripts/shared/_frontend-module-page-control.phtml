@@ -1,0 +1,7 @@
+This page:
+
+<?php if ($this->allowPublish) : ?>
+<a href="<?php echo $this->escape($this->secureHost) ?>/<?php echo $this->escape($this->controllerName) ?>/publish/id/<?php echo $this->escape($this->id) ?>" title="Edit <?php echo $this->escape($this->moduleName) ?> <?php echo $this->escape($this->pageName) ?> publishing"><img src="/images/icons/globe.png" alt="Globe icon"></a>&nbsp;
+<?php else : ?>
+<img src="/images/icons/globe_disabled.png" alt="Globe icon disabled" title="Access denied or action not possible for this page">&nbsp;
+<?php endif; ?>

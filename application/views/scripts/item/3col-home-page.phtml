@@ -1,0 +1,20 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-equal.css', 'screen');
+if ($this->colourScheme) {
+    $this->headLink()->appendStylesheet('/css/' . $this->colourScheme . '-colour-scheme.css', 'screen');
+}
+$this->layout()->title = $this->title;
+$this->layout()->metaKeywords = $this->metaKeywords;
+$this->layout()->metaDescription = $this->metaDescription;
+$this->layout()->template = $this->templateName;
+?>
+
+            <section class="col first-col">
+                <?php foreach ((array) $this->leftColumn as $block) : echo $block; endforeach; ?>
+            </section>
+            <section class="col">
+                <?php foreach ((array) $this->centreColumn as $block) : echo $block; endforeach; ?>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

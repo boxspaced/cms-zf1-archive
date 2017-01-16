@@ -1,0 +1,2 @@
+00 00 * * * __USER__ __BASEDIR__/application/cli/search --index
+30 00 * * * __USER__ __BASEDIR__/application/cli/digital-gallery --index

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cms" default="build" basedir="." description="CMS project">
+
+    <property file="./build/properties/default.properties" />
+
+    <if>
+        <isset property="build.env" />
+        <then>
+            <echo message="Overwriting default.properties with ${build.env}.properties" />
+            <property file="./build/properties/${build.env}.properties" override="true" />
+        </then>
+    </if>
+
+    <php function="sys_get_temp_dir" returnProperty="server.tmpdir" />
+
+    <target name="init" description="Initialise the project">
+
+    </target>
+
+    <target name="build" depends="init" description="Build the project">
+        <phingcall target="create-dirs" />
+        <phingcall target="install-js-libs" />
+        <phingcall target="create-logs" />
+        <phingcall target="install-cronjobs" />
+        <phingcall target="db-create" />
+        <phingcall target="db-migrate-up" />
+        <phingcall target="prepare" />
+    </target>
+
+    <target name="test" description="Run all tests">
+        <phingcall target="prepare" />
+        <phingcall target="test-unit" />
+        <phingcall target="test-functional" />
+    </target>
+
+    <target name="clear" description="Clear uploads, cache, data and database">
+        <phingcall target="clear-cache" />
+        <phingcall target="clear-uploads" />
+        <phingcall target="clear-data" />
+        <phingcall target="db-drop" />
+        <phingcall target="db-create" />
+        <phingcall target="db-migrate-up" />
+    </target>
+
+    <target name="create-dirs" description="Create directories whose contents are managed by Apache">
+
+        <mkdir dir="${project.basedir}/public/assets/documents" mode="0775" />
+        <mkdir dir="${project.basedir}/public/assets/flash" mode="0775" />
+        <mkdir dir="${project.basedir}/public/assets/images" mode="0775" />
+        <mkdir dir="${project.basedir}/public/assets/media" mode="0775" />
+        <mkdir dir="${project.basedir}/public/assets/_thumbs" mode="0775" />
+        <mkdir dir="${project.basedir}/public/digital_gallery/_thumbs" mode="0775" />
+        <mkdir dir="${project.basedir}/private/digital_gallery" mode="0775" />
+        <mkdir dir="${project.basedir}/private/helpdesk_attachments" mode="0775" />
+        <mkdir dir="${project.basedir}/data/indexes" mode="0775" />
+
+        <chown file="${project.basedir}/public/assets/documents" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/assets/flash" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/assets/images" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/assets/media" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/assets/_thumbs" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/digital_gallery" group="${webserver.group}" />
+        <chown file="${project.basedir}/public/digital_gallery/_thumbs" group="${webserver.group}" />
+        <chown file="${project.basedir}/private/digital_gallery" group="${webserver.group}" />
+        <chown file="${project.basedir}/private/helpdesk_attachments" group="${webserver.group}" />
+        <chown file="${project.basedir}/data/indexes" group="${webserver.group}" />
+    </target>
+
+    <target name="install-js-libs" description="Install Javascript libraries">
+        <exec command="wget --quiet http://yui.github.io/yui2/archives/yui_${yui.version}.zip" dir="${server.tmpdir}" passthru="true" />
+        <unzip file="${server.tmpdir}/yui_${yui.version}.zip" todir="${server.tmpdir}" />
+        <copy todir="${project.basedir}/public/yui" overwrite="true">
+            <fileset dir="${server.tmpdir}/yui/build">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <delete dir="${server.tmpdir}/yui" />
+        <delete file="${server.tmpdir}/yui_${yui.version}.zip" />
+    </target>
+
+
+    <target name="create-logs" description="Create log files writeable by Apache">
+        <touch file="${server.tmpdir}/log" />
+        <chmod file="${server.tmpdir}/log" mode="0664" />
+        <!-- @todo this needs to be run as sudo -->
+        <chown file="${server.tmpdir}/log" group="${webserver.group}" />
+    </target>
+
+    <!-- @todo this needs to be run as sudo -->
+    <target name="install-cronjobs" description="Install cronjobs to the /etc/cron.d directory">
+        <delete>
+            <fileset dir="/etc/cron.d/">
+                <include name="${phing.project.name}-*" />
+            </fileset>
+        </delete>
+        <copy todir="/etc/cron.d/">
+            <filterchain>
+                <replacetokens begintoken="__" endtoken="__">
+                    <token key="PHP" value="${php.interpreter}" />
+                    <token key="BASEDIR" value="${project.basedir}" />
+                    <token key="USER" value="${webserver.user}" />
+                </replacetokens>
+            </filterchain>
+            <mapper type="glob" from="" to="${phing.project.name}-*" />
+            <fileset dir="${project.basedir}/cron.d">
+                <include name="*" />
+                <exclude name="/" />
+            </fileset>
+        </copy>
+        <chmod mode="0644">
+            <fileset dir="/etc/cron.d/">
+                <include name="${phing.project.name}-*" />
+            </fileset>
+        </chmod>
+    </target>
+
+    <target name="prepare" depends="clean" description="Prepare the project">
+        <mkdir dir="${project.basedir}/build/behat/screenshots" />
+        <mkdir dir="${project.basedir}/build/behat/responses" />
+    </target>
+
+    <target name="clean" description="Clean the project">
+        <delete dir="${project.basedir}/build/behat" />
+    </target>
+
+    <target name="db-create" description="Create a fresh install of the database">
+        <exec command="./db --create" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="db-drop" description="Drop the database">
+        <exec command="./db --drop" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="db-migrate-up" description="Run all pending UP migrations">
+        <exec command="./phinx migrate -c ${project.basedir}/phinx.php" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="db-rollback" description="Rollback to the previous migration">
+        <exec command="./phinx rollback -c ${project.basedir}/phinx.php" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <!-- @todo will not work because it needs a name for the migration -->
+    <target name="db-new-migration" description="Create a new migration file">
+        <exec command="./phinx create -c ${project.basedir}/phinx.php" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="test-unit" description="Run unit tests">
+        <exec command="./phpunit -c ${project.basedir}/tests/unit/phpunit.xml" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="test-functional" description="Run functional tests">
+        <exec command="./behat -c ${project.basedir}/tests/functional/behat.yml --ansi" dir="${project.basedir}/bin/" passthru="true"/>
+    </target>
+
+    <target name="clear-cache" description="Clear cache">
+        <exec command="rm -rf zend_cache---*" dir="${server.tmpdir}" passthru="true" />
+    </target>
+
+    <target name="clear-uploads" description="Clear asset uploads">
+        <exec command="rm -rf *" dir="${project.basedir}/public/assets/documents" passthru="true" />
+        <exec command="rm -rf *" dir="${project.basedir}/public/assets/flash" passthru="true" />
+        <exec command="rm -rf *" dir="${project.basedir}/public/assets/images" passthru="true" />
+        <exec command="rm -rf *" dir="${project.basedir}/public/assets/media" passthru="true" />
+        <exec command="rm -rf *" dir="${project.basedir}/public/assets/_thumbs" passthru="true" />
+        <exec command="rm -f *.jpg *.JPG" dir="${project.basedir}/private/digital_gallery" passthru="true" />
+        <exec command="rm -f *.jpg *.JPG" dir="${project.basedir}/public/digital_gallery" passthru="true" />
+        <exec command="rm -f *.jpg *.JPG" dir="${project.basedir}/public/digital_gallery/_thumbs" passthru="true" />
+        <exec command="rm -rf *" dir="${project.basedir}/private/helpdesk_attachments" passthru="true" />
+    </target>
+
+    <target name="clear-data" description="Clear data">
+        <exec command="rm -rf *" dir="${project.basedir}/data/indexes" passthru="true" />
+    </target>
+
+</project>

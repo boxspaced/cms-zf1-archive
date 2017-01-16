@@ -1,0 +1,25 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-left.css', 'screen');
+$this->layout()->title = $this->message;
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1><?php echo $this->escape($this->message) ?></h1>
+                <?php if ($this->code == 404) : ?>
+                <p>The page you are looking for might have been removed, had its
+                    name changed,<br>or is temporarily unavailable.</p>
+                <?php endif ?>
+                <?php if (isset($this->exception)) : ?>
+                <h2>Exception information:</h2>
+                <p><b>Message:</b> <?php echo $this->escape($this->exception->getMessage()) ?></p>
+                <h2>Stack trace:</h2>
+                <pre><?php echo $this->escape($this->exception->getTraceAsString()) ?></pre>
+                <h2>Request parameters:</h2>
+                <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?></pre>
+                <?php endif ?>
+            </section>
+            <section class="col last-col">
+                &nbsp;
+            </section>

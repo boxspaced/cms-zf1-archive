@@ -1,0 +1,14 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+
+<td width="100%">
+<!--<div class="item-icon">
+<img src="<?php echo $this->escape($this->typeIcon) ?>" alt="" title="<?php echo $this->escape($this->typeName) ?>" />
+</div>-->
+<div class="item-title"><em><?php echo $this->escape($this->subject) ?></em></div>
+<div class="item-detail">
+Status: <em><?php echo $this->escape($this->status) ?></em><br />
+Created by <em><?php echo $this->escape($this->username) ?></em> on <em><?php echo $this->date($this->createdAt, 'l, F j, Y') ?></em> at <em><?php echo $this->date($this->createdAt, 'H:i') ?></em></div></td>
+
+<td><a href="/helpdesk/view-ticket/id/<?php echo $this->escape($this->id) ?>"><img src="/images/icons/view.png" alt="View icon" title="View" /></a></td>
+
+</tr>

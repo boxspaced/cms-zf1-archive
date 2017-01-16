@@ -1,0 +1,74 @@
+<div class="navbar">
+    <div class="navbar-inner">
+
+        <ul class="nav">
+
+            <li class="dropdown">
+
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <em id="boxspaced-label">Boxspaced</em>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/account">Account home</a></li>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/helpdesk">Helpdesk</a></li>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/account/logout">Logout</a></li>
+                </ul>
+
+            </li>
+
+            <li class="dropdown">
+
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Site
+                    <b class="caret"></b>
+                </a>
+
+                <ul class="dropdown-menu">
+
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/menu">Menu content</a></li>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/standalone">Standalone content</a></li>
+
+                    <?php if ($this->manageableModules) : ?>
+                    <li class="dropdown-submenu">
+                        <a href="#">Modules</a>
+                        <ul class="dropdown-menu">
+                            <?php $count = 1; foreach ($this->manageableModules as $module) : ?>
+                            <li><a href="<?php echo $this->escape($this->secureHost) ?>/<?php echo $this->escape($module) ?>/manage"><?php echo $this->escape($module) ?></a></li>
+                            <?php $count++; endforeach; ?>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/block">Blocks</a></li>
+
+                    <?php if ($this->allowManageAssets) : ?>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/asset">Asset manager</a></li>
+                    <?php endif; ?>
+
+                </ul>
+
+            </li>
+
+            <li class="dropdown">
+
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Workflow
+                    <b class="caret"></b>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <?php if ($this->allowViewAuthoring) : ?>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/workflow/authoring">Authoring</a></li>
+                    <?php endif; ?>
+                    <?php if ($this->allowViewPublishing) : ?>
+                    <li><a href="<?php echo $this->escape($this->secureHost) ?>/workflow/publishing">Publishing</a></li>
+                    <?php endif; ?>
+                </ul>
+
+            </li>
+
+        </ul>
+
+    </div>
+</div>

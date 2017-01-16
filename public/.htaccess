@@ -1,0 +1,37 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteBase /
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]
+
+# Compression
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/json
+
+# Disable ETags as only on single server
+# Enable (and configure correctly) if move to multiple servers
+Header unset ETag
+FileETag None
+
+<IfModule mod_php5.c>
+    # Any changes here should be reflected in .user.ini
+    php_value upload_max_filesize 600M
+    php_value post_max_size 600M
+</IfModule>
+
+<IfModule mod_php7.c>
+    # Any changes here should be reflected in .user.ini
+    php_value upload_max_filesize 600M
+    php_value post_max_size 600M
+</IfModule>
+
+# Hide .user.ini
+<Files ~ "\.ini">
+   Order allow,deny
+   Deny from all
+</Files>

@@ -1,0 +1,59 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-right.css', 'screen');
+$this->headLink()->appendStylesheet('/css/light-blue-colour-scheme.css', 'screen');
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = $this->title;
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Course Search</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+            </section>
+            <article class="col last-col">
+                <h2><?php echo $this->escape($this->title) ?></h2>
+                <table class="course">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Day of Week</th>
+                            <th>Start Date</th>
+                            <th>Time</th>
+                            <th>Weeks</th>
+                            <th>Hrs per week</th>
+                            <th>Venue</th>
+                            <th>Fee</th>
+                            <th>Concession</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo $this->escape($this->code) ?></td>
+                            <td><?php echo $this->escape($this->day) ?></td>
+                            <td><?php echo $this->date($this->startDate, 'd M Y') ?></td>
+                            <td><?php echo $this->date($this->time, 'H:i') ?></td>
+                            <td><?php echo $this->escape($this->numWeeks) ?></td>
+                            <td><?php echo $this->escape($this->hoursPerWeek) ?></td>
+                            <td><?php echo $this->escape($this->venue) ?></td>
+                            <td>&pound;<?php echo $this->escape(number_format($this->fee, 2)) ?></td>
+                            <td>&pound;<?php echo $this->escape(number_format($this->concession, 2)) ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <?php if ($this->description) : ?>
+                <p><?php echo $this->escape($this->description) ?></p>
+                <?php endif; ?>
+            </article>

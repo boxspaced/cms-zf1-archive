@@ -1,0 +1,97 @@
+<script type="text/javascript">
+    YAHOO.util.Event.onContentReady('main_menu', function () {
+        var oMenuBar = new YAHOO.widget.MenuBar('main_menu', { lazyload: true });
+        oMenuBar.render();
+    });
+</script>
+
+<div id="main_menu" class="yuimenubar">
+    <div class="bd">
+        <ul class="first-of-type">
+
+            <li class="yuimenubaritem first-of-type">
+                <a class="yuimenubaritemlabel" href="#sub_menu_logo"><em id="boxspaced-label">Boxspaced</em></a>
+
+                <div id="sub_menu_logo" class="yuimenu">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem first-of-type"><a class="yuimenuitemlabel" href="/account">Account home</a>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="/helpdesk">Helpdesk</a>
+                            <li class="yuimenuitem"><a class="yuimenuitemlabel" href="/account/logout">Logout</a>
+                        </ul>
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="yuimenubaritem">
+                <a class="yuimenubaritemlabel" href="#sub_menu_site">Site</a>
+
+                <div id="sub_menu_site" class="yuimenu">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <li class="yuimenuitem first-of-type">
+                                <a class="yuimenuitemlabel" href="/menu">Menu content</a>
+                            </li>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="/standalone">Standalone content</a>
+                            </li>
+
+                            <?php if ($this->manageableModules) : ?>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="#sub_menu_site_modules">Modules</a>
+
+                                <div id="sub_menu_site_modules" class="yuimenu">
+                                    <div class="bd">
+                                        <ul class="first-of-type">
+                                            <?php $count = 1; foreach ($this->manageableModules as $module) : ?>
+                                            <li class="yuimenuitem<?php if ($count == 1) : ?> first-of-type<?php endif; ?>">
+                                                <a class="yuimenuitemlabel" href="/<?php echo $this->escape($module) ?>/manage"><?php echo $this->escape($module) ?></a>
+                                            </li>
+                                            <?php $count++; endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </li>
+                            <?php endif; ?>
+
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="/block">Blocks</a>
+                            </li>
+
+                            <?php if ($this->allowManageAssets) : ?>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="/asset">Asset manager</a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+
+            </li>
+
+            <li class="yuimenubaritem">
+                <a class="yuimenubaritemlabel" href="#sub_menu_workflow">Workflow</a>
+
+                <div id="sub_menu_workflow" class="yuimenu">
+                    <div class="bd">
+                        <ul class="first-of-type">
+                            <?php if ($this->allowViewAuthoring) : ?>
+                            <li class="yuimenuitem first-of-type"><a class="yuimenuitemlabel" href="/workflow/authoring">Authoring</a>
+                            <?php endif; ?>
+                            <?php if ($this->allowViewPublishing) : ?>
+                            <li class="yuimenuitem<?php if (!$this->allowViewAuthoring) : ?> first-of-type<?php endif; ?>"><a class="yuimenuitemlabel" href="/workflow/publishing">Publishing</a>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+
+<div id="top"><!-- Start top area -->

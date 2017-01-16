@@ -1,0 +1,21 @@
+<div class="yuimenu">
+    <div class="bd">
+        <ul class="first-of-type">
+            <?php if ($this->allowCreateItem) : ?>
+            <li class="yuimenuitem first-of-type">
+                <a class="yuimenuitemlabel" href="/item/create/from/menu/provisionalTo/Menu/provisionalBeneathMenuItemId/<?php echo $this->escape($this->beneathMenuItemId) ?>">item</a>
+            </li>
+            <?php endif; ?>
+            <?php if ($this->allowCreateForm) : ?>
+            <li class="yuimenuitem<?php if (!$this->allowCreateItem) : ?> first-of-type<?php endif; ?>">
+                <a class="yuimenuitemlabel" href="/form/create/from/menu/provisionalTo/Menu/provisionalBeneathMenuItemId/<?php echo $this->escape($this->beneathMenuItemId) ?>">form</a>
+            </li>
+            <?php endif; ?>
+            <?php if ($this->allowCreateContainer) : ?>
+            <li class="yuimenuitem<?php if (!$this->allowCreateItem && !$this->allowCreateForm) : ?> first-of-type<?php endif; ?>">
+                <a class="yuimenuitemlabel" href="/container/create/from/menu/provisionalTo/Menu/provisionalBeneathMenuItemId/<?php echo $this->escape($this->beneathMenuItemId) ?>">container</a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+</div>

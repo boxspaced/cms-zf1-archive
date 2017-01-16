@@ -1,0 +1,21 @@
+This page: <img src="/images/icons/lightbulb_<?php echo $this->escape($this->lifespanState) ?>.png" alt="Bulb <?php echo $this->escape($this->lifespanState) ?> icon" title="<?php echo $this->escape($this->lifespanTitle) ?>">
+
+<?php if ($this->allowEdit) : ?>
+<a href="<?php echo $this->escape($this->secureHost) ?>/<?php echo $this->escape($this->controllerName) ?>/edit/id/<?php echo $this->escape($this->id) ?>" title="Edit"><img src="/images/icons/edit.png" alt="Edit icon"></a>&nbsp;
+<?php else : ?>
+<img src="/images/icons/edit_disabled.png" alt="Edit icon disabled" title="Access denied">&nbsp;
+<?php endif; ?>
+
+<?php if ($this->allowPublish) : ?>
+<a href="<?php echo $this->escape($this->secureHost) ?>/<?php echo $this->escape($this->controllerName) ?>/publish/id/<?php echo $this->escape($this->id) ?>" title="Edit publishing"><img src="/images/icons/globe.png" alt="Globe icon"></a>&nbsp;
+<?php else : ?>
+<img src="/images/icons/globe_disabled.png" alt="Globe icon disabled" title="Access denied">&nbsp;
+<?php endif; ?>
+
+<!-- @TODO Need to stop things being deleted if they have anything beneath in menu
+<?php if ($this->allowDelete) : ?>
+<a href="<?php echo $this->escape($this->secureHost) ?>/<?php echo $this->escape($this->controllerName) ?>/delete/id/<?php echo $this->escape($this->id) ?>" title="Delete"><img src="/images/icons/dustbin.png" alt="Dustbin icon"></a>&nbsp;
+<?php else : ?>
+<img src="/images/icons/dustbin_disabled.png" alt="Dustbin icon disabled" title="Access denied">&nbsp;
+<?php endif; ?>
+-->

@@ -1,0 +1,48 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+
+<td width="100%">
+<div class="item-icon">
+<img src="<?php echo $this->escape($this->typeIcon) ?>" alt="" title="<?php echo $this->escape($this->typeName) ?>" />
+</div>
+<div class="item-title"><em><?php echo $this->escape($this->name) ?></em></div>
+<div class="item-detail">
+Type: <em><?php echo $this->escape($this->typeName) ?></em><br />
+Version: <em><?php echo $this->escape($this->workflowStatus) ?></em><br />
+Workflow stage: <em><?php echo $this->escape(ucfirst(strtolower($this->workflowStage))) ?></em><br />
+Authored by <em>you</em> on <em><?php echo $this->date($this->authoredTime, 'l, F j, Y') ?></em> at <em><?php echo $this->date($this->authoredTime, 'H:i') ?></em></div></td>
+
+<td><img class="notes-icon clickable-icon" src="/images/icons/notes.png" alt="Notes icon" title="Notes" /><div class="notes">
+<div class="hd">Notes</div>
+<div class="bd"><p>
+    <?php if (empty($this->notes)) : ?>
+    No notes found
+    <?php else : ?>
+    <?php foreach ($this->notes as $note) : ?>
+    <?php echo $this->date($note->time, 'F j Y H:i') . ' - ' .
+    $this->escape($note->username) . ' - ' .
+    $this->escape($note->text) ?><br />
+    <?php endforeach; ?>
+    <?php endif; ?>
+    </p></div>
+</div></td>
+
+<?php
+$allowedStages = array(
+    App_Domain_Service_WorkflowableInterface::WORKFLOW_STAGE_AUTHORING,
+    App_Domain_Service_WorkflowableInterface::WORKFLOW_STAGE_REJECTED
+);
+?>
+
+<?php if (in_array($this->workflowStage, $allowedStages)) : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/edit/id/<?php echo $this->escape($this->id) ?>" class="workflow-edit" title="Edit"><img src="/images/icons/edit.png" alt="Edit icon" /></a></td>
+<?php else : ?>
+<td><img src="/images/icons/none.png" /></td>
+<?php endif; ?>
+
+<?php if (in_array($this->workflowStage, $allowedStages)) : ?>
+<td><a href="/workflow/authoring-delete/moduleName/<?php echo $this->escape($this->controllerName) ?>/id/<?php echo $this->escape($this->id) ?>" class="workflow-delete" title="Delete"><img src="/images/icons/dustbin.png" alt="Delete icon" /></a></td>
+<?php else : ?>
+<td><img src="/images/icons/none.png" /></td>
+<?php endif; ?>
+
+</tr>

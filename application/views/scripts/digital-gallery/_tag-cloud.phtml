@@ -1,0 +1,7 @@
+<nav>
+    <ul class="cloud" style="display: none;">
+        <?php foreach ($this->keywords as $keyword) : ?>
+        <li><a href="/digital-gallery/results?q=<?php echo $this->escape($keyword->text) ?>" class="tag<?php echo $this->escape($keyword->rank) ?>"><?php echo $this->escape($keyword->text) ?></a></li>
+        <?php endforeach; ?>
+    </ul>
+</nav>

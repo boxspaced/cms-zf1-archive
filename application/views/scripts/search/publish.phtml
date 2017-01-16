@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/container/assets/skins/sam/container.css" />
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+
+        <script type="text/javascript" src="/js/buttons.js"></script>
+        <script type="text/javascript" src="/js/general.js"></script>
+        <script type="text/javascript" src="/js/dynamic_tables.js"></script>
+
+    </head>
+
+    <body class="yui-skin-sam" onload="<?php if ($this->preview) : ?>open_preview('/<?php echo $this->escape($this->moduleName) ?>/<?php echo $this->escape($this->pageName) ?>?preview=publishing')<?php endif; ?>">
+
+        <div id="top"><!-- Start top area -->
+
+            <div class="title">Publish:
+                <?php echo $this->escape($this->moduleName) ?> - <i><?php echo $this->escape($this->pageName) ?></i></div>
+            <?php echo $this->flashMessages() ?>
+            <div class="info"><img src="/images/required_star.png" alt="Required"> indicates required field</div>
+
+        </div><!-- End top area -->
+
+        <?php
+        $form = $this->form;
+        $form->render();
+        ?>
+
+        <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+
+            <?php echo $this->decorateFormElement($form->from) ?>
+            <?php echo $this->decorateFormElement($form->id) ?>
+            <?php echo $this->decorateFormElement($form->partial) ?>
+            <?php echo $this->decorateFormElement($form->token) ?>
+
+            <div id="stage"><!-- Start stage area -->
+
+                <?php
+                $freeBlocksForm = $form->getSubForm('freeBlocks');
+                $freeBlockForms = $freeBlocksForm->getSubForms();
+                $blockSequencesSubForm = $form->getSubForm('blockSequences');
+                $blockSequencesForms = $blockSequencesSubForm->getSubForms();
+                ?>
+
+                <?php if ($freeBlockForms || $blockSequencesForms) : ?>
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Blocks</div>
+
+                        <?php foreach ($freeBlockForms as $freeBlockForm) : ?>
+                        <?php foreach ($freeBlockForm->getElements() as $element) : ?>
+                        <div class="form-element">
+                            <label class="lined-up"><?php echo $element->getLabel() ?></label>
+                            <div class="form-inputs line-up">
+                                <table class="table" style="background-color: #ffffff;">
+                                    <thead>
+                                        <tr>
+                                            <th>Block</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <?php echo $this->decorateFormElement($element, true) ?>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endforeach; ?>
+
+                        <?php
+                        foreach ($blockSequencesForms as $blockSequencesForm) :
+
+                            $blockSequenceName = $blockSequencesForm->getName();
+                            $decoratedNumNewBlocks = $this->decorateFormElement($blockSequencesForm->numNewBlocks, true);
+                            $decoratedNumCurrentBlocks = $this->decorateFormElement($blockSequencesForm->numCurrentBlocks, true);
+
+                            $idOptions = array();
+                            foreach ($form->getBlockMultiOptions() as $blockTypeName => $options) :
+                                foreach ($options as $value => $label) :
+                                    $idOptions[$value] = $blockTypeName . ' ' . $label;
+                                endforeach;
+                            endforeach;
+
+                            $idNameTpl = $blockSequencesSubForm->getName() . '[' . $blockSequenceName . '][#][id]';
+                            $orderByNameTpl = $blockSequencesSubForm->getName() . '[' . $blockSequenceName . '][#][orderBy]';
+                        ?>
+
+                        <div class="form-element">
+                            <label class="lined-up"><?php echo $blockSequenceName ?></label>
+                            <div class="form-inputs line-up">
+                                <table class="table" style="background-color: #ffffff;" id="tbl_block_seq_<?php echo $blockSequenceName ?>_en">
+                                    <thead>
+                                        <tr>
+                                            <th>Block</th>
+                                            <th colspan="3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+
+                                <script type="text/javascript">
+
+                                    <?php foreach ($blockSequencesForm->getSubForms() as $blockSequenceForm) : ?>
+
+                                    addRow(
+                                    'saved',
+                                    'tbl_block_seq_<?php echo $blockSequenceName ?>_en',
+                                    [
+                                        '<?php echo $orderByNameTpl ?>',
+                                        '<?php echo $blockSequenceForm->orderBy->getValue() ?>'
+                                    ],
+                                    [
+                                        [
+                                            'createBlockIdSelect',
+                                            '<?php echo $idNameTpl ?>',
+                                            '<?php echo $blockSequenceForm->id->getValue() ?>',
+                                            [['', '']
+                                            <?php foreach ($idOptions as $value => $label) : ?>
+                                            ,['<?php echo $value ?>', '<?php echo $label ?>']
+                                            <?php endforeach; ?>],
+                                            false
+                                        ]
+                                    ],
+                                    '<?php echo $decoratedNumCurrentBlocks->getId() ?>',
+                                    '<?php echo $decoratedNumNewBlocks->getId() ?>',
+                                    'en',
+                                    'en',
+                                    ['en']);
+
+                                    <?php endforeach; ?>
+
+                                    sortTable('tbl_block_seq_<?php echo $blockSequenceName ?>_en', 0, 0, 'numeric', 'ASC');
+                                </script>
+
+                                <p><a class="link" href="javascript:void(0)" onclick="addBlankRow(
+                                        'tbl_block_seq_<?php echo $blockSequenceName ?>_en',
+                                        20,
+                                        [
+                                            '<?php echo $orderByNameTpl ?>',
+                                            ''
+                                        ],
+                                        [
+                                            [
+                                                'createBlockIdSelect',
+                                                '<?php echo $idNameTpl ?>',
+                                                '',
+                                                [
+                                                    ['', '']
+                                                    <?php foreach ($idOptions as $value => $label) : ?>
+                                                    ,['<?php echo $value ?>', '<?php echo $label ?>']
+                                                    <?php endforeach; ?>
+                                                ],
+                                                false
+                                            ]
+                                        ],
+                                        '<?php echo $decoratedNumCurrentBlocks->getId() ?>',
+                                        '<?php echo $decoratedNumNewBlocks->getId() ?>',
+                                        'en',
+                                        'en',
+                                        ['en']);">Add block</a></p>
+
+                                <?php echo $decoratedNumCurrentBlocks ?>
+                                <?php echo $decoratedNumNewBlocks ?>
+
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <?php endforeach; ?>
+
+                    </div>
+                </div><!-- End fieldset -->
+                <?php else : ?>
+                <p>No publishing options available for this page</p>
+                <?php endif; ?>
+
+            </div><!-- End stage area -->
+
+            <div class="submit-area">
+
+                <div class="form-element">
+                    <div class="form-inputs line-up">
+                        <?php
+                        $form->preview->setAttrib('class', 'button');
+                        echo $this->decorateFormElement($form->preview, true) ?>
+                    </div>
+                </div>
+
+                <div class="form-element">
+                    <div class="form-inputs line-up">
+                        <?php
+                        $form->publish->setAttrib('class', 'button');
+                        echo $this->decorateFormElement($form->publish, true) ?>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </body>
+</html>

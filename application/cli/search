@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+define('PREVENT_BOOTSTRAPPING', true);
+require_once realpath(dirname(__FILE__)) . '/../../public/index.php';
+
+$application->bootstrap();
+$bootstrap = $application->getBootstrap();
+
+$log = $bootstrap->getResource('log');
+$container = $bootstrap->getContainer();
+
+try {
+
+    $options = new Zend_Console_Getopt(
+        [
+            'index|i' => '(Re)index the site',
+        ]
+    );
+    $options->parse();
+
+    switch (true) {
+
+        case $options->getOption('index'):
+
+            $container['ItemService']->reindex();
+            break;
+
+        default:
+
+            echo $options->getUsageMessage();
+            exit(1);
+
+    }
+
+} catch (Zend_Console_Getopt_Exception $e) {
+
+    echo $e->getUsageMessage();
+    exit(1);
+
+} catch (Exception $e) {
+
+    $log->err($e);
+    echo 'An error occured, please see logs';
+    exit(1);
+}

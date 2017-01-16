@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css" />
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+        <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+
+        <script type="text/javascript" src="/js/general.js"></script>
+        <script type="text/javascript" src="/js/dynamic_tables.js"></script>
+    </head>
+
+    <body class="yui-skin-sam"><?php echo $this->adminMenuControl ?>
+
+        <div class="title">Asset manager</div>
+
+        <?php echo $this->flashMessages() ?>
+
+        </div><!-- End top area -->
+
+        <div id="stage"><!-- Start stage area -->
+
+            <script type="text/javascript">
+
+                // This is a sample function which is called when a file is selected in CKFinder.
+                function showFileInfo( fileUrl, data, allFiles )
+                {
+                        var msg = 'The last selected file is: <a href="' + fileUrl + '">' + fileUrl + '</a><br /><br />';
+                        // Display additional information available in the "data" object.
+                        // For example, the size of a file (in KB) is available in the data["fileSize"] variable.
+                        if ( fileUrl != data['fileUrl'] )
+                                msg += '<b>File url:</b> ' + data['fileUrl'] + '<br />';
+                        msg += '<b>File size:</b> ' + data['fileSize'] + 'KB<br />';
+                        msg += '<b>Last modified:</b> ' + data['fileDate'];
+
+                        if ( allFiles.length > 1 )
+                        {
+                                msg += '<br /><br /><b>Selected files:</b><br /><br />';
+                                msg += '<ul style="padding-left:20px">';
+                                for ( var i = 0 ; i < allFiles.length ; i++ )
+                                {
+                                        // See also allFiles[i].url
+                                        msg += '<li>' + allFiles[i].data['fileUrl'] + ' (' + allFiles[i].data['fileSize'] + 'KB)</li>';
+                                }
+                                msg += '</ul>';
+                        }
+                        // this = CKFinderAPI object
+                        this.openMsgDialog( "Selected file", msg );
+                }
+
+                var finder = new CKFinder();
+                finder.basePath = '/ckfinder/';
+                finder.height = 600;
+                finder.selectActionFunction = showFileInfo;
+                finder.create();
+
+            </script>
+
+        </div><!-- End stage area -->
+
+    </body>
+</html>

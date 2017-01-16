@@ -1,0 +1,15 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+    <td><?php echo $this->escape($this->category) ?></td>
+    <td><?php echo $this->escape($this->title) ?></td>
+    <td><?php echo $this->escape($this->code) ?></td>
+    <td><?php echo $this->escape($this->day) ?></td>
+    <td><?php echo $this->date($this->startDate, 'Y-m-d') ?></td>
+    <td><?php echo $this->date($this->time, 'H:i') ?></td>
+    <td><?php echo $this->escape($this->numWeeks) ?></td>
+    <td><?php echo $this->escape($this->hoursPerWeek) ?></td>
+    <td><?php echo $this->escape($this->venue) ?></td>
+    <td><?php echo $this->escape(number_format($this->fee, 2)) ?></td>
+    <td><?php echo $this->escape(number_format($this->concession, 2)) ?></td>
+    <td><?php echo $this->escape($this->dayTime) ?></td>
+    <td><?php echo $this->escape($this->description) ?></td>
+</tr>

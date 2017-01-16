@@ -1,0 +1,28 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-left.css', 'screen');
+$this->headLink()->appendStylesheet('/css/lime-green-colour-scheme.css', 'screen');
+$this->layout()->title = 'Contact Us';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+$form = $this->form;
+?>
+
+            <section class="col first-col">
+                <h1>Contact Us</h1>
+                <?php echo $this->beforeContent ?>
+                <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+                    <ol class="form">
+                        <?php echo $form->name ?>
+                        <?php echo $form->email ?>
+                        <?php echo $form->dayPhone ?>
+                        <?php echo $form->resident ?>
+                        <?php echo $form->message ?>
+                        <li id="submit-element" class="element">
+                            <button type="submit" class="btn btn-success">Send</button>
+                        </li>
+                    </ol>
+                </form>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

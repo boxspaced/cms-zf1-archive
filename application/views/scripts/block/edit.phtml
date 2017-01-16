@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/tabview/assets/skins/sam/tabview.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css" />
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/tabview/tabview-min.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+        <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+
+        <script type="text/javascript" src="/js/buttons.js"></script>
+        <script type="text/javascript" src="/js/general.js"></script>
+        <script type="text/javascript" src="/js/dynamic_tables.js"></script>
+        <script type="text/javascript" src="/js/calendar.js"></script>
+    </head>
+
+    <body class="yui-skin-sam">
+
+        <div id="top"><!-- Start top area -->
+
+            <div class="title">Edit<?php echo ($this->titleSuffix) ? ' ' . $this->escape(strtolower($this->titleSuffix)) : '' ?>:
+            <?php echo $this->escape($this->typeName) ?> - <i><?php echo $this->escape($this->blockName) ?></i></div>
+            <?php echo $this->flashMessages() ?>
+            <div class="info"><img src="/images/required_star.png" alt="Required"> indicates required field</div>
+
+        </div><!-- End top area -->
+
+        <?php
+        $form = $this->form;
+        $form->render();
+        ?>
+
+        <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+
+            <?php echo $this->decorateFormElement($form->from) ?>
+            <?php echo $this->decorateFormElement($form->id) ?>
+            <?php echo $this->decorateFormElement($form->partial) ?>
+            <?php echo $this->decorateFormElement($form->token) ?>
+
+            <div id="stage"><!-- Start stage area -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Notes</div>
+                        <p>
+                            <?php if (empty($this->blockNotes)) : ?>
+                            No notes found
+                            <?php else : ?>
+                            <?php foreach ($this->blockNotes as $note) : ?>
+                            <?php echo $this->date($note->time, 'F j Y H:i') . ' - ' .
+                            $this->escape($note->username) . ' - ' .
+                            $this->escape($note->text) ?><br />
+                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </div><!-- End fieldset -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Content</div>
+
+                        <?php
+                        $fieldsForm = $form->getSubForm('fields');
+                        foreach ($fieldsForm->getElements() as $element) : ?>
+                        <?php echo $this->decorateFormElement($element) ?>
+                        <?php if (strpos($element->getAttrib('class'), 'wysiwyg') !== false) : ?>
+                        <script type="text/javascript">
+                            var editor = CKEDITOR.replace('<?php echo $element->getId() ?>', {
+                                width: 700,
+                                height: 300
+                            });
+                            CKFinder.setupCKEditor(editor, '/ckfinder/');
+                        </script>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+
+                    </div>
+
+                </div><!-- End fieldset -->
+            </div><!-- End stage area -->
+
+                <div class="submit-area">
+
+                    <?php echo $this->decorateFormElement($form->note) ?>
+
+                    <div class="form-element">
+                        <div class="form-inputs line-up">
+                            <?php
+                            $form->save->setAttrib('class', 'button');
+                            echo $this->decorateFormElement($form->save, true) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-element">
+                        <div class="form-inputs line-up">
+                            <?php
+                            $form->publish->setAttrib('class', 'button');
+                            echo $this->decorateFormElement($form->publish, true) ?>
+                        </div>
+                    </div>
+
+                </div>
+
+        </form>
+
+    </body>
+</html>

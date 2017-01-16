@@ -1,0 +1,26 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-left.css', 'screen');
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = 'Search results';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Results</h1>
+                <?php if ($this->results) : ?>
+                <ol class="search-results">
+                    <?php foreach ($this->results as $result) : ?>
+                    <?php echo $result ?>
+                    <?php endforeach; ?>
+                </ol>
+                <?php else : ?>
+                <p>No results found</p>
+                <?php endif; ?>
+                <?php echo $this->paginationControl($this->paginator, 'Sliding', 'shared/_frontend-pagination.phtml', array(
+                    'query' => $this->query
+                )); ?>
+            </section>
+            <section class="col last-col">
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

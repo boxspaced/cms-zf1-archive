@@ -1,0 +1,15 @@
+.col {
+    width: 450px;
+    float: left;
+    margin: 0 20px;
+}
+
+.first-col {
+    width: 205px;
+    margin: 0 20px 0 30px;
+}
+
+.last-col {
+    width: 205px;
+    margin: 0 30px 0 20px;
+}

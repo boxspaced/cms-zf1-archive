@@ -1,0 +1,71 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-equal.css', 'screen');
+$this->headLink()->appendStylesheet('/css/red-colour-scheme.css', 'screen');
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = 'Digital Gallery';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>Digital Gallery</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+            </section>
+            <section class="col">
+                <form action="/digital-gallery/results" method="get" accept-charset="UTF-8">
+                    <div class="input-append">
+                        <input type="text" id="digital-gallery-search-q" name="q" placeholder="Search digital gallery...">
+                        <button type="submit" id="digital-gallery-search-btn" class="btn btn-success">Search</button>
+                    </div>
+                    <br><br>
+                    <h2>Search Filters</h2>
+                    <hr>
+                    <h3>Browse by Decade</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterCategories as $category) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="categories[]" value="<?php echo $this->escape($category->value) ?>">
+                        <?php echo $this->escape($category->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Location</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterThemes as $theme) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="themes[]" value="<?php echo $this->escape($theme->value) ?>">
+                        <?php echo $this->escape($theme->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <h3>Browse by Subject Area</h3>
+                    <div class="filter">
+                        <?php foreach ($this->filterSubjects as $subject) : ?>
+                        <label class="checkbox">
+                        <input type="checkbox" name="subjects[]" value="<?php echo $this->escape($subject->value) ?>">
+                        <?php echo $this->escape($subject->label) ?>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-success pull-right">Search</button>
+                </form>
+            </section>
+            <section class="col last-col">
+                <?php echo $this->tagCloud($this->tagCloud); ?>
+                <?php foreach ((array) $this->rightColumn as $block) : echo $block; endforeach; ?>
+            </section>

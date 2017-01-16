@@ -1,0 +1,20 @@
+default:
+  context:
+    parameters:
+      screenshot_path: %behat.paths.features%/../../../build/behat/screenshots
+      response_path: %behat.paths.features%/../../../build/behat/responses
+  paths:
+    features: features
+    bootstrap: %behat.paths.features%/bootstrap
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: http://www.cms.dev
+      files_path: %behat.paths.features%/bootstrap/_files
+      selenium2: ~
+      goutte:
+        guzzle_parameters:
+           curl.options:
+              CURLOPT_SSL_VERIFYPEER: false
+              CURLOPT_CERTINFO: false
+              CURLOPT_TIMEOUT: 120
+           ssl.certificate_authority: false

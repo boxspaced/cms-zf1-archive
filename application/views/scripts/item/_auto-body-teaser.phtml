@@ -1,0 +1,12 @@
+<?php
+if (empty($this->body)) {
+    foreach ($this as $name => $value) {
+        if (stripos($name, 'intro') !== false || stripos($name, 'body') !== false) {
+            $this->body = $value;
+            break;
+        }
+    }
+}
+?>
+<li><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->title) ?></a><br>
+<?php echo rtrim(trim($this->teaserTruncate($this->body, 200)), '.'); ?>...</li>

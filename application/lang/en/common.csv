@@ -1,0 +1,50 @@
+isEmpty;This field is required
+stringLengthTooShort;This field can not be less than %min% characters long
+stringLengthTooLong;This field can not be greater than %max% characters long
+regexNotMatch;This field must match against the given pattern
+notLessThan;This field must be less than '%max%'
+notIpAddress;This field must be a valid IP address
+notInt;This field must be a whole number
+notInArray;'%value%' was not found in the array
+notSame;Confirmation does not match (try again)
+missingToken;No token was provided to match against (try again)
+hostnameIpAddressNotAllowed;The hostname can not be an IP addresses
+hostnameUnknownTld;The hostname TLD (e.g. .co.uk) is invalid
+hostnameDashCharacter;The hostname contains a dash (-) in an invalid position
+hostnameInvalidHostnameSchema;The hostname is invalid
+hostnameUndecipherableTld;The hostname TLD (e.g. .co.uk) is undecipherable
+hostnameInvalidHostname;The hostname does not appear to be a valid DNS hostname
+hostnameInvalidLocalName;The hostname does not appear to be a valid local network name
+hostnameLocalNameNotAllowed;The hostname can not be a local network name
+notHex;'%value%' has not only hexadecimal digit characters
+notGreaterThan;This field must be greater than '%min%'
+notFloat;This field must be a decimal
+emailAddressInvalid;The email address format is invalid
+emailAddressInvalidFormat;The email address format is invalid
+emailAddressInvalidHostname;The email address hostname (e.g. @yahoo.co.uk) is invalid
+emailAddressInvalidMxRecord;The email address must exist
+emailAddressDotAtom;The email address could not be matched against dot-atom format
+emailAddressQuotedString;The email address could not be matched against quoted-string format
+emailAddressInvalidLocalPart;The email address local part (e.g. yourname@) is invalid
+notDigits;This field must only contain digit characters
+stringEmpty;'%value%' is an empty string
+dateNotYYYY-MM-DD;This field must be a date in the format YYYY-MM-DD
+dateInvalid;This field must be a valid date
+dateFalseFormat;This field must be a date in the given format
+ccnumLength;This field must contain between 13 and 19 digits
+ccnumChecksum;This field must be a valid credit/debit card number
+creditcardChecksum;This field must be a valid credit/debit card number
+creditcardContent;This field must contain digits only
+creditcardInvalid;This field must be a valid credit/debit card number
+creditcardLength;This field must be a valid credit/debit card number
+creditcardPrefix;This field must be a valid credit/debit card number
+notBetween;This field must be between '%min%' - '%max%', inclusively
+notBetweenStrict;This field must be strictly between '%min%' - '%max%
+notAlpha;This field must only contain alphabetic characters
+stringEmpty;'%value%' is an empty string
+notAlnum;This field must only contain alphabetic and digit characters
+stringEmpty;'%value%' is an empty string
+noRecordFound;A record with this value does not exist
+recordFound;A record with this value already exists
+fileExistsDoesNotExist;File does not exist
+isbnNoIsbn;Invalid ISBN number

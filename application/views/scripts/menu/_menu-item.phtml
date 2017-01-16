@@ -1,0 +1,101 @@
+<?php
+$red = 255-(($this->level-1)*20);
+$green = 255-(($this->level-1)*12);
+?>
+
+<tr id="<?php echo $this->escape($this->name) ?>" style="background-color: rgb(<?php echo $red ?>,<?php echo $green ?>,255);">
+<td width="100%" style="padding-left: <?php echo ($this->level-1)*35 ?>px;">
+
+<div class="item-icon">
+<img src="<?php echo $this->escape($this->typeIcon) ?>" alt="" title="<?php echo $this->escape($this->typeName) ?><?php if ($this->controllerName != 'item') : ?> <?php echo $this->escape($this->controllerName) ?><?php endif; ?>" />
+</div>
+
+<div class="item-title">
+<?php if ($this->controllerName == 'container') : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em> &#8212; <a class="link" href="/container/view/id/<?php echo $this->escape($this->id) ?>/from/menu" title="View items">view items (<?php echo $this->escape($this->numContainerItems) ?>)</a>
+<?php elseif ($this->controllerName == 'form' && $this->allowViewFormSubmissions) : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em> &#8212; <a class="link" href="/form/view-submissions/id/<?php echo $this->escape($this->id) ?>/from/menu" title="View submissions">view submissions</a>
+<?php else : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em>
+<?php endif; ?>
+</div>
+
+<div class="item-detail">
+Type: <em><?php echo $this->escape($this->typeName) ?><?php if ($this->controllerName != 'item') : ?> <?php echo $this->escape($this->controllerName) ?><?php endif; ?></em>
+</div>
+
+</td>
+
+<?php if ($this->allowCreate && $this->level < $this->maxMenuLevels) : ?>
+
+<td style="white-space: nowrap;">
+<img src="/images/icons/add_beneath.png" alt="Add beneath icon" />
+<a class="link-button" href="/item/create/from/menu/provisionalTo/Menu/provisionalBeneathMenuItemId/<?php echo $this->escape($this->menuItemId) ?>">Create new beneath</a>
+<!--<input type="button" class="add-to-menu-button" value="Create new ... beneath" />-->
+<?php //echo $this->createBeneathDropdown ?>
+</td>
+
+<?php elseif ($this->allowCreate) : ?>
+<td>&nbsp;</td>
+<?php endif; ?>
+
+<?php if (!$this->module && !$this->external) : ?>
+<td>
+    <span class="sprite-icon sprite-lightbulb-<?php echo $this->escape($this->lifespanState) ?>" title="<?php echo $this->escape($this->lifespanTitle) ?>">Bulb <?php echo $this->escape($this->lifespanState) ?> icon</span>
+</td>
+<?php else : ?>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<?php endif; ?>
+
+<?php if ($this->allowShuffleMenu) : ?>
+<?php if (!$this->first) : ?>
+<td><a href="/menu/shuffle/id/<?php echo $this->escape($this->menuItemId) ?>/direction/up" title="Shuffle up"><span class="sprite-icon sprite-arrow-up-on">Arrow up icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-arrow-up-off">Arrow up icon disabled</span></td>
+<?php endif; ?>
+<?php if (!$this->last) : ?>
+<td><a href="/menu/shuffle/id/<?php echo $this->escape($this->menuItemId) ?>/direction/down" title="Shuffle down"><span class="sprite-icon sprite-arrow-down-on">Arrow down icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-arrow-down-off">Arrow down icon disabled</span></td>
+<?php endif; ?>
+<?php else : ?>
+<td><span class="sprite-icon sprite-arrow-up-off">Arrow up icon disabled</span></td>
+<td><span class="sprite-icon sprite-arrow-down-off">Arrow down icon disabled</span></td>
+<?php endif; ?>
+
+<?php if (!$this->module && !$this->external) : ?>
+
+<?php if ($this->allowEdit) : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/edit/id/<?php echo $this->escape($this->id) ?>/from/menu" title="Edit"><span class="sprite-icon sprite-edit-on">Edit icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-edit-off">Edit icon disabled</span></td>
+<?php endif; ?>
+
+<?php if ($this->allowPublish) : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/publish/id/<?php echo $this->escape($this->id) ?>/from/menu" title="Edit publishing"><span class="sprite-icon sprite-globe-on">Globe icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-globe-off">Globe icon disabled</span></td>
+<?php endif; ?>
+
+<?php if ($this->allowDelete) : ?>
+<?php if ($this->controllerName == "container" && $this->numContainerItems) : ?>
+<td><span class="sprite-icon sprite-dustbin-off" title="You can not delete this container because it is not empty">Dustbin disabled icon</span></td>
+<?php elseif ($this->numChildMenuItems) : ?>
+<td><span class="sprite-icon sprite-dustbin-off" title="You can not delete this <?php echo $this->escape($this->controllerName) ?> because it has other items below it in the menu">Dustbin disabled icon</span></td>
+<?php else : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/delete/id/<?php echo $this->escape($this->id) ?>/from/menu" title="Delete"><span class="sprite-icon sprite-dustbin-on">Dustbin icon</span></a></td>
+<?php endif; ?>
+<?php else : ?>
+<td><span class="sprite-icon sprite-dustbin-off">Dustbin disabled icon</span></td>
+<?php endif; ?>
+
+<?php else : ?>
+
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+
+<?php endif; ?>
+
+</tr>

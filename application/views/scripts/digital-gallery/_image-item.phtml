@@ -1,0 +1,7 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+    <td><?php echo $this->escape($this->title) ?></td>
+    <td><a target="_blank" href="/digital_gallery/_thumbs/<?php echo $this->escape($this->imageName) ?>">View thumbnail</a></td>
+    <td><a target="_blank" href="/digital_gallery/<?php echo $this->escape($this->imageName) ?>">View large image</a></td>
+    <td><a href="/digital-gallery/edit/id/<?php echo $this->escape($this->id) ?>"><img src="/images/icons/edit.png" alt="Edit icon" title="Edit" /></a></td>
+    <td><a href="/digital-gallery/delete/id/<?php echo $this->escape($this->id) ?>"><img src="/images/icons/dustbin.png" alt="Delete icon" title="Delete" /></a></td>
+</tr>

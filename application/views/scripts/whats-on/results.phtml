@@ -1,0 +1,73 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-right.css', 'screen');
+$this->headLink()->appendStylesheet('/css/lime-green-colour-scheme.css', 'screen');
+$this->headLink()->appendStylesheet('/bootstrap-datepicker/css/datepicker.css', 'screen');
+$this->inlineScript()->appendFile('/bootstrap-datepicker/js/bootstrap-datepicker.js');
+$calendarScript = <<<SCRIPT
+$(function(){
+    $('#calendar').datepicker().on('changeDate', function(e) {
+        var date = new Date(e.date.valueOf());
+        var month = (date.getMonth()+1).toString();
+        if (month.length == 1) {
+            month = '0' + month;
+        }
+        var day = date.getDate().toString();
+        if (day.length == 1) {
+            day = '0' + day;
+        }
+        $('#calendar-date').val(date.getFullYear() + '-' + month + '-' + day);
+    });
+});
+SCRIPT;
+$this->inlineScript()->appendScript($calendarScript);
+$this->layout()->title = 'Your search results';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+$calendarStartVenue = !empty($this->query['venues'][0]) ? $this->query['venues'][0] : '';
+$calendarStartDate = !empty($this->query['specificDates'][0]) ? $this->query['specificDates'][0] : date('Y-m-d');
+?>
+
+            <section class="col first-col">
+                <h1>What's On</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+                <h2>Calendar</h2>
+                <hr>
+                <form action="/whats-on/results" method="get" accept-charset="UTF-8">
+                    <select name="venues[]">
+                        <option value=""<?php if ($calendarStartVenue == '') : ?> selected="selected"<?php endif; ?>>Any Venue</option>
+                        <?php foreach ($this->filterVenues as $venue) : ?>
+                        <option value="<?php echo $this->escape($venue->value) ?>"<?php if ($venue->value == $calendarStartVenue) : ?> selected="selected"<?php endif; ?>>
+                            <?php echo ($venue->label == 'All') ? 'All Venues' : $this->escape($venue->label) ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="hidden" name="specificDates[]" id="calendar-date" value="<?php echo $this->escape($calendarStartDate) ?>" />
+                    <div id="calendar" data-date="<?php echo $this->escape($calendarStartDate) ?>" data-date-format="yyyy-mm-dd"></div>
+                    <button type="submit" id="whats-on-date-search-btn" class="btn btn-success">Search</button>
+                </form>
+            </section>
+            <section class="col last-col">
+                <h2>Your search results:</h2>
+                <?php if (count($this->paginator)) : ?>
+                <ol class="search-results">
+                    <?php echo $this->partialLoop('whats-on/_result-item.phtml', $this->paginator) ?>
+                </ol>
+                <?php else : ?>
+                <p>No results found</p>
+                <?php endif; ?>
+                <?php echo $this->paginationControl($this->paginator, 'Sliding', 'shared/_frontend-pagination.phtml', array(
+                    'query' => $this->query
+                )); ?>
+            </section>

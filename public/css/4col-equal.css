@@ -1,0 +1,14 @@
+.col {
+    background-color: yellow;
+    width: 205px;
+    float: left;
+    margin: 0 20px;
+}
+
+.first-col {
+    margin: 0 20px 0 30px;
+}
+
+.last-col {
+    margin: 0 30px 0 20px;
+}

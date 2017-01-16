@@ -1,0 +1,18 @@
+<li class="digital-gallery-result">
+    <a href="/digital-gallery/index/id/<?php echo $this->escape($this->id) ?>">
+        <img src="<?php echo $this->escape($this->thumbSrc) ?>" />
+    </a>
+    <p>
+        <?php echo $this->escape($this->title) ?><br>
+        &copy; <?php echo $this->escape($this->copyright) ?><!--<br>
+        <?php if ($this->inBasket) : ?>
+        <span class="in-basket"><img src="/images/icons/add.png" /> In basket</span>
+        <?php else : ?>
+        <a class="add-to-basket" href="/digital-gallery/add-to-basket/id/<?php echo $this->escape($this->id) ?>">Add to basket</a>
+        <span class="in-basket" style="display: none"><img src="/images/icons/add.png" /> In basket</span>
+        <?php endif; ?>-->
+    </p>
+</li>
+<?php if ($this->partialCounter % 3 === 0) : ?>
+<div class="clearfix"></div>
+<?php endif; ?>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="<?php echo $this->escape($this->layout()->metaKeywords) ?>" />
+        <meta name="description" content="<?php echo $this->escape($this->layout()->metaDescription) ?>" />
+        <meta name="cms:template" content="<?php echo $this->escape($this->layout()->template) ?>" />
+        <title>Site - <?php echo $this->escape($this->layout()->title) ?></title>
+        <!--[if lt IE 9]>
+        <script src="/html5shiv/html5shiv.js"></script>
+        <![endif]-->
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+        <link href="/css/global.css" rel="stylesheet" media="screen" />
+        <?php echo $this->headLink(); ?>
+    </head>
+    <body>
+        <div id="content">
+            <?php if ($this->adminMenuControl) : ?>
+            <nav id="admin-menu-control">
+                <?php echo $this->adminMenuControl ?>
+            </nav>
+            <?php endif; ?>
+            <?php if ($this->adminControl) : ?>
+            <nav id="admin-control" class="well">
+                <?php echo $this->adminControl ?>
+            </nav>
+            <?php endif; ?>
+            <section class="accessibility">
+                <h1>Site - <?php echo $this->escape($this->layout()->title) ?></h1>
+                <nav>
+                    <ul>
+                        <li><a accesskey="s" href="#main-content">Skip to content</a> [access key 's']</li>
+                        <li><a accesskey="n" href="#navigation">Skip to navigation</a> [access key 'n']</li>
+                        <li><a accesskey="3" href="/sitemap">Site map</a> [access key '3']</li>
+                        <li><a accesskey="0" href="/accessibility">Accessibility information</a> [access key '0']</li>
+                    </ul>
+                </nav>
+            </section>
+            <header id="header">
+                <div id="search">
+                    <form class="form-search" action="/search/simple" method="get">
+                        <div class="input-append">
+                            <input accesskey="4" class="search-query" type="text" name="q" placeholder="Search...">
+                            <button type="submit" class="btn"><i class="icon-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+                <a id="navigation"></a>
+                <nav>
+                <?php echo $this->navigation()
+                        ->menu()
+                        ->setUlClass('nav nav-pills')
+                        ->setUlId('main-nav')
+                        ->setActiveClass('active')
+                        ->setMaxDepth(0); ?>
+                </nav>
+            </header>
+            <nav id="breadcrumbs">
+                <?php if (!$this->hideBreadcrumbs) : ?>
+                <a href="/home">Home</a> /
+                <?php if ($this->isStandalone) : ?>
+                <?php echo $this->escape($this->navText) ?>
+                <?php else : ?>
+                    <?php echo $this->navigation()
+                        ->breadcrumbs()
+                        ->setSeparator(' / ')
+                        ->setMinDepth(0); ?>
+                <?php endif; ?>
+                <?php endif; ?>
+            </nav>
+            <?php echo $this->flashMessages() ?>
+            <div class="clearfix"></div>
+            <a id="main-content"></a>
+            <?php echo $this->layout()->content; ?>
+            <div class="clearfix"></div>
+            <footer id="footer">
+                <p>&copy; Site <?php echo date('Y') ?></p>
+                <nav id="footer-menu">
+                    <a accesskey="c" href="/form/contact-us">Contact Us</a>
+                </nav>
+                <div class="clearfix"></div><br>
+            </footer>
+        </div>
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/js/global.js"></script>
+        <?php echo $this->inlineScript(); ?>
+    </body>
+</html>

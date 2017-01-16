@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css"/>
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css"/>
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css"/>
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+        <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+
+        <script type="text/javascript" src="/js/buttons.js"></script>
+        <script type="text/javascript" src="/js/index_buttons.js"></script>
+        <script type="text/javascript" src="/js/general.js"></script>
+        <script type="text/javascript" src="/js/dynamic_tables.js"></script>
+    </head>
+
+    <body class="yui-skin-sam"><?php echo $this->adminMenuControl ?>
+
+        <div class="title">Index of: courses</div>
+
+        <?php echo $this->flashMessages() ?>
+
+        <div class="actions">
+            <img src="/images/icons/add.png" alt="Add icon" />
+            <a class="link-button" href="/course/import">Import</a>
+            <!--<a class="link-button" href="/course/reindex">Reindex</a>-->
+        </div>
+
+        </div><!-- End top area -->
+
+        <div id="stage"><!-- Start stage area -->
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Title</th>
+                        <th>Code</th>
+                        <th>Day</th>
+                        <th>Start Date</th>
+                        <th>Time</th>
+                        <th>Num Weeks</th>
+                        <th>Hours Per Week</th>
+                        <th>Venue</th>
+                        <th>Fee</th>
+                        <th>Concession</th>
+                        <th>Day / Time</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (count($this->paginator)) : ?>
+                    <?php echo $this->partialLoop('course/_course-item.phtml', $this->paginator) ?>
+                    <?php else : ?>
+                    <tr class="odd"><td width="100%" colspan="12">Empty result set</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+
+            <?php echo $this->paginationControl($this->paginator, 'Sliding', 'shared/_pagination.phtml'); ?>
+
+        </div><!-- End stage area -->
+
+    </body>
+</html>

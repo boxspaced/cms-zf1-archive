@@ -1,0 +1,51 @@
+<tr class="<?php echo ($this->partialCounter % 2) ? 'odd' : 'even' ?>">
+
+<td width="100%">
+
+<div class="item-icon">
+<img src="<?php echo $this->escape($this->typeIcon) ?>" alt="" title="<?php echo $this->escape($this->typeName) ?><?php if ($this->controllerName != 'item') : ?> <?php echo $this->escape($this->controllerName) ?><?php endif; ?>" />
+</div>
+
+<div class="item-title">
+<?php if ($this->controllerName == 'container') : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em> &#8212; <a class="link" href="/container/view/id/<?php echo $this->escape($this->id) ?>/from/menu" title="View items">view items (<?php echo $this->escape($this->numContainerItems) ?>)</a>
+<?php elseif ($this->controllerName == 'form' && $this->allowViewFormSubmissions) : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em> &#8212; <a class="link" href="/form/view-submissions/id/<?php echo $this->escape($this->id) ?>/from/menu" title="View submissions">view submissions</a>
+<?php else : ?>
+<em><a href="/<?php echo $this->escape($this->name) ?>"><?php echo $this->escape($this->name) ?></a></em>
+<?php endif; ?>
+</div>
+
+<div class="item-detail">
+Type: <em><?php echo $this->escape($this->typeName) ?><?php if ($this->controllerName != 'item') : ?> <?php echo $this->escape($this->controllerName) ?><?php endif; ?></em>
+</div>
+
+</td>
+
+<td>
+<span class="sprite-icon sprite-lightbulb-<?php echo $this->escape($this->lifespanState) ?>" title="<?php echo $this->escape($this->lifespanTitle) ?>">Bulb <?php echo $this->escape($this->lifespanState) ?> icon</span>
+</td>
+
+<?php if ($this->allowEdit) : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/edit/id/<?php echo $this->escape($this->id) ?>/from/standalone" title="Edit"><span class="sprite-icon sprite-edit-on">Edit icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-edit-off">Edit icon disabled</span></td>
+<?php endif; ?>
+
+<?php if ($this->allowPublish) : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/publish/id/<?php echo $this->escape($this->id) ?>/from/standalone" title="Edit publishing"><span class="sprite-icon sprite-globe-on">Globe icon</span></a></td>
+<?php else : ?>
+<td><span class="sprite-icon sprite-globe-off">Globe icon disabled</span></td>
+<?php endif; ?>
+
+<?php if ($this->allowDelete) : ?>
+<?php if ($this->controllerName == "container" && $this->numContainerItems) : ?>
+<td><span class="sprite-icon sprite-dustbin-off" title="You can not delete this container because it is not empty">Dustbin disabled icon</span></td>
+<?php else : ?>
+<td><a href="/<?php echo $this->escape($this->controllerName) ?>/delete/id/<?php echo $this->escape($this->id) ?>/from/standalone" title="Delete"><span class="sprite-icon sprite-dustbin-on">Dustbin icon</span></a></td>
+<?php endif; ?>
+<?php else : ?>
+<td><span class="sprite-icon sprite-dustbin-off">Dustbin disabled icon</span></td>
+<?php endif; ?>
+
+</tr>

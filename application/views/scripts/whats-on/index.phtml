@@ -1,0 +1,32 @@
+<?php
+$this->headLink()->appendStylesheet('/css/2col-large-right.css', 'screen');
+$this->headLink()->appendStylesheet('/css/lime-green-colour-scheme.css', 'screen');
+$this->layout()->title = $this->title;
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+?>
+
+            <section class="col first-col">
+                <h1>What's On</h1>
+                <nav>
+                    <?php
+                    $active = $this->navigation()->findActive($this->navigation()->getContainer(), 1, null);
+                    if (!isset($active['page']) || $active['page']->pages) :
+                    $depth = isset($active['depth']) ? $active['depth'] : 1;
+                    echo $this->navigation()->menu()->renderMenu(null, array(
+                        'minDepth' => $depth,
+                        'onlyActiveBranch' => true,
+                        'renderParents' => false,
+                        'ulId' => 'sub-nav',
+                    ));
+                    endif; ?>
+                </nav>
+            </section>
+            <article class="col last-col">
+                <h2><?php echo $this->escape($this->activity) ?></h2>
+                <p>Category: <?php echo $this->escape($this->category) ?><br>
+                Day / time: <?php echo $this->escape($this->dayTime) ?><br>
+                Venue: <?php echo $this->escape($this->venue) ?><br>
+                Age: <?php echo $this->escape($this->age) ?><br>
+                Description: <?php echo $this->escape($this->description) ?></p>
+            </article>

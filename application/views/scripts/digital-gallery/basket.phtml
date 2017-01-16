@@ -1,0 +1,55 @@
+<?php
+$this->headLink()->appendStylesheet('/css/3col-large-middle.css', 'screen');
+$this->headLink()->appendStylesheet('/css/red-colour-scheme.css', 'screen');
+//$this->inlineScript()->appendScript('');
+$this->layout()->title = 'Your basket';
+$this->layout()->metaKeywords = '';
+$this->layout()->metaDescription = '';
+$form = $this->form;
+?>
+
+            <section class="col first-col">
+                <h1>Your Basket</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                    sit amet erat ante. Aenean ut nisi rutrum, ultricies odio vel,
+                    viverra enim. Ut fermentum tincidunt vestibulum. Ut dictum tortor
+                    elit, egestas lacinia odio mattis sit amet.</p>
+                <hr>
+                <p><a href="<?php echo $this->url(array(
+                    'controller' => 'digital-gallery',
+                    'action' => 'basket')) ?>">Your basket (<?php echo $this->escape($this->basketCount) ?>)</a></p>
+                <p><a href="<?php echo $this->url(array(
+                    'controller' => 'digital-gallery',
+                    'action' => 'empty-basket')) ?>">Empty basket</a></p>
+                <hr>
+            </section>
+            <section class="col">
+
+                <?php if (count($this->contents)) : ?>
+                <?php echo $this->partialLoop('digital-gallery/_basket-item.phtml', $this->contents) ?>
+                <?php else : ?>
+                <p>Basket empty, please select an image and 'add to basket' to purchase.</p>
+                <?php endif; ?>
+
+                <?php if (count($this->contents)) : ?>
+                <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+                    <ol class="form">
+                        <?php echo $form->name ?>
+                        <?php echo $form->email ?>
+                        <?php echo $form->dayPhone ?>
+                        <?php echo $form->message ?>
+                        <li id="submit-element" class="element">
+                            <button type="submit" class="btn btn-success">Send</button>
+                        </li>
+                    </ol>
+                </form>
+                <?php endif; ?>
+
+            </section>
+            <section class="col last-col">
+                <h2>Terms & Conditions</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                    sit amet erat ante. Aenean ut nisi rutrum, ultricies odio vel,
+                    viverra enim. Ut fermentum tincidunt vestibulum. Ut dictum tortor
+                    elit, egestas lacinia odio mattis sit amet.</p>
+            </section>

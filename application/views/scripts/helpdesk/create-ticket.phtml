@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+
+        <link rel="stylesheet" type="text/css" href="/yui/reset/reset-min.css" />
+        <link rel="stylesheet" type="text/css" href="/yui/fonts/fonts-min.css"/>
+        <link rel="stylesheet" type="text/css" href="/yui/button/assets/skins/sam/button.css"/>
+        <link rel="stylesheet" type="text/css" href="/yui/menu/assets/skins/sam/menu.css"/>
+
+        <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+
+        <script type="text/javascript" src="/yui/utilities/utilities.js"></script>
+        <script type="text/javascript" src="/yui/container/container-min.js"></script>
+        <script type="text/javascript" src="/yui/menu/menu-min.js"></script>
+        <script type="text/javascript" src="/yui/button/button-min.js"></script>
+
+        <script type="text/javascript" src="/js/buttons.js"></script>
+        <script type="text/javascript" src="/js/index_buttons.js"></script>
+        <script type="text/javascript" src="/js/general.js"></script>
+    </head>
+
+    <body class="yui-skin-sam"><?php echo $this->adminMenuControl ?>
+
+        <div class="title">Create: helpdesk ticket</div>
+
+        <?php echo $this->flashMessages() ?>
+
+        </div><!-- End top area -->
+
+        <?php
+        $form = $this->form;
+        $form->render();
+        ?>
+
+        <form<?php foreach ($form->getAttribs() as $key => $value) : ?> <?php echo $key ?>="<?php echo $value ?>"<?php endforeach; ?>>
+
+            <div id="stage"><!-- Start stage area -->
+
+                <div class="white-box"><!-- Start fieldset -->
+                    <div class="white-box-rounded-corner-top"><div></div></div>
+                    <div class="white-box-content">
+                        <div class="white-box-title">Ticket</div>
+
+                        <?php echo $this->decorateFormElement($form->token) ?>
+                        <?php echo $this->decorateFormElement($form->subject) ?>
+                        <?php echo $this->decorateFormElement($form->issue) ?>
+                        <?php echo $this->decorateFormElement($form->attachment) ?>
+
+                    </div>
+                </div><!-- End fieldset -->
+
+            </div><!-- End stage area -->
+
+            <div class="submit-area">
+                <div class="form-element">
+                    <div class="form-inputs line-up">
+                        <?php
+                        $form->save->setAttrib('class', 'button');
+                        echo $this->decorateFormElement($form->save, true) ?>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </body>
+</html>
